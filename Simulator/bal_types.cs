@@ -76,7 +76,7 @@ namespace Simulator
         {
             set
             {
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < itemss.Lenght; i++)
                     itemss[i] = value[i];
 
                 DoubleToTOrbVec();
