@@ -62,6 +62,7 @@ namespace Simulator
             double cf, sf;
             double Z;
 
+
             if(Wgs_84)
             {
                 sf = Math.Sin(Fzg / rg);
