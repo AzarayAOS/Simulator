@@ -163,7 +163,9 @@ namespace Simulator
             p = ff / (3 * Math.Pow(s + 1 / s + 1, 2) * g * g);
             q = Math.Sqrt(1 + 2 * e2 * e2 * p);
             
-            ro = -(e2 * p * r) / (1 + q) + Math.Sqrt((a84 * a84 / 2) * (1 + 1 / q) - ((1 - e2) *    p * sqrZ) / (q * (1 + q)) - p * r2 / 2);
+            ro = -(e2 * p * r) / (1 + q) + Math.Sqrt((a84 * a84 / 2) * 
+                (1 + 1 / q) - ((1 - e2) *    p * sqrZ) / 
+                (q * (1 + q)) - p * r2 / 2);
 
             tmp = Math.Pow(r - e2 * ro, 2);
             u = Math.Sqrt(tmp + sqrZ);
