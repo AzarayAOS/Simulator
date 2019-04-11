@@ -13,7 +13,7 @@ namespace Simulator
     /// </summary>
     class DoubleIndex
     {
-        readonly double[] _source;
+        double[] _source;
 
         public int Lenght { get { return _source.Length; } }
 

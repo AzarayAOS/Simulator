@@ -1,24 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Simulator
 {
-   static class wgs84
+    internal static class wgs84
     {
-        const bool Wgs_84 = true;
+        private const bool Wgs_84 = true;
+        private const double a84 = 6378.137;            //экваториальный радиус -большая п/ось WGS-84
+        private const double b84 = 6356.752315245;      //полярный радиус -малая п/ось WGS-84
+        private const double ab84 = 1 / 298.257223563;  //0.0033523298693{1/298.3}; {(a-b)/a Сжатие в WGS-84}
+        private const double ee84 = 1 - 0.0033523298693 * 0.0033523298693;// Квадрат эксцентриситета = 1-sqr(b/a)
+                                                                          // Внимание!! геодезические широта и долгота в градусах !!!!!
 
-        const double a84 = 6378.137;            //экваториальный радиус -большая п/ось WGS-84
-        const double b84 = 6356.752315245;      //полярный радиус -малая п/ось WGS-84
-        const double ab84 = 1 / 298.257223563;  //0.0033523298693{1/298.3}; {(a-b)/a Сжатие в WGS-84}
-        const double ee84 = 1 - 0.0033523298693 * 0.0033523298693;// Квадрат эксцентриситета = 1-sqr(b/a)
-            // Внимание!! геодезические широта и долгота в градусах !!!!!
 
-        const double rg = 57.2957795130;        // коэффициент в радианах
+        private const double rg = 57.2957795130;        // коэффициент в радианах
 
-        static double r3 = 6371.11;
+        private static readonly double r3 = 6371.11;
 
         /// <summary>
         /// Перевод из системы WGS-84 в декартову систему координат. 
@@ -30,7 +26,7 @@ namespace Simulator
         /// <param name="X"></param>
         /// <param name="Y"></param>
         /// <param name="Z"></param>
-        static void wgs84_XYZ(double Hw,double Fwg,double Lwg,ref double X, ref double Y,ref double Z)
+        private static void wgs84_XYZ(double Hw, double Fwg, double Lwg, ref double X, ref double Y, ref double Z)
         {
             double N;
             double cf, sf, cl, sl;
@@ -56,14 +52,14 @@ namespace Simulator
         /// <param name="Fzg"></param>
         /// <param name="R"></param>
         /// <param name="F"></param>
-        static void wgs84_Rf(double Hz,double Fzg,ref double R,ref double F)
+        private static void wgs84_Rf(double Hz, double Fzg, ref double R, ref double F)
         {
             double N;
             double cf, sf;
             double Z;
 
 
-            if(Wgs_84)
+            if (Wgs_84)
             {
                 sf = Math.Sin(Fzg / rg);
                 cf = Math.Cos(Fzg / rg);
@@ -90,13 +86,13 @@ namespace Simulator
         /// <param name="f"></param>
         /// <param name="Hz"></param>
         /// <param name="Fzg"></param>
-        static void RF_wgs84(double r,double f,ref double Hz,ref double Fzg)
+        private static void RF_wgs84(double r, double f, ref double Hz, ref double Fzg)
         {
             double sf, cf, N, Z;
             double rw, fw;
             int ni;
 
-            if (r==0)
+            if (r == 0)
             {
                 Hz = 0;
                 Fzg = 0;
@@ -111,7 +107,10 @@ namespace Simulator
 
             do
             {
-                if (!Wgs_84) break;
+                if (!Wgs_84)
+                {
+                    break;
+                }
 
                 sf = Math.Sin(Fzg / rg);
                 cf = Math.Cos(Fzg / rg);
@@ -127,7 +126,7 @@ namespace Simulator
                 ni++;
 
 
-            } while (Math.Abs(rw-r)<1e-8);
+            } while (Math.Abs(rw - r) < 1e-8);
 
             Fzg = Fzg * rg;
 
@@ -142,7 +141,7 @@ namespace Simulator
         /// <param name="Hw"></param>
         /// <param name="Fwg"></param>
         /// <param name="Lwg"></param>
-        static void XYZ_wgs84(double X,double Y,double Z,ref double Hw,ref double Fwg,ref double Lwg)
+        private static void XYZ_wgs84(double X, double Y, double Z, ref double Hw, ref double Fwg, ref double Lwg)
         {
             double p, ro, s, u, v;
             double f, e2, ep2, r2, r, ee2, ff, g, c, q, tmp, zo;
@@ -162,9 +161,9 @@ namespace Simulator
             s = Math.Pow(1 + c + Math.Sqrt(c * c + 2 * c), 1 / 3);
             p = ff / (3 * Math.Pow(s + 1 / s + 1, 2) * g * g);
             q = Math.Sqrt(1 + 2 * e2 * e2 * p);
-            
-            ro = -(e2 * p * r) / (1 + q) + Math.Sqrt((a84 * a84 / 2) * 
-                (1 + 1 / q) - ((1 - e2) *    p * sqrZ) / 
+
+            ro = -(e2 * p * r) / (1 + q) + Math.Sqrt((a84 * a84 / 2) *
+                (1 + 1 / q) - ((1 - e2) * p * sqrZ) /
                 (q * (1 + q)) - p * r2 / 2);
 
             tmp = Math.Pow(r - e2 * ro, 2);
