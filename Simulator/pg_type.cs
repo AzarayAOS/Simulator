@@ -266,7 +266,13 @@ namespace Simulator
 
             return c;
         }
-
+        
+        /// <summary>
+        /// Вычисление определеителся инверстной матрицы
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="detg"></param>
+        /// <returns></returns>
         public double[][] MatrixInvertDet(double[][]a,ref double detg)
         {
             int dim;
@@ -348,5 +354,134 @@ namespace Simulator
 
 
 
+        /// <summary>
+        /// Трансопнирование матрицы
+        /// </summary>
+        /// <param name="a"></param>
+        /// <returns></returns>
+        public double [][] MatrixTranspose(double [][]a)
+        {
+            double[][] b;
+            int dim1,dim2;
+
+            dim1 = a.Length+1;
+            dim2 = a[0].Length+1;
+            b = new double[a.Length + 1][];
+            for (int i = 0; i <= dim2; i++)
+                b[i] = new double[dim1];
+
+            for (int i = 0; i <= dim1 - 1; i++)
+                for (int j = 0; j <= dim2; j++)
+                    b[j][i] = a[i][j];
+
+            return b;
+        }
+
+
+        /// <summary>
+        /// Перемножение матриц(кажеться)
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double[][] MatrixOnMatrix(double[][]a,double[][]b)
+        {
+            double[][] temp;
+            temp = new double[a.Length + 1][];
+            for (int i = 0; i < a.Length + 1; i++)
+                temp[i] = new double[a[0].Length + 1];
+
+
+            for (int i = 0; i <= a.Length; i++)
+                for (int j = 0; j <= b[0].Length; j++)
+                    for (int k = 0; k <= a[0].Length; k++)
+                        temp[i][j] = temp[i][j] + a[i][k] * b[k][j];
+
+
+            return temp;
+        }
+
+        /// <summary>
+        /// Умножение строк матрицы на вектор
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double[] MatrixOnVector(double[][]a,double[]b)
+        {
+            double[] temp = new double[a.Length + 1];
+            for (int i = 0; i <= a.Length; i++)
+                for (int j = 0; j < a[0].Length; j++)
+                    temp[i] = temp[i] + a[i][j] * b[j];
+            return temp;
+        }
+
+        /// <summary>
+        /// Поэлементно суммируем две матрицы
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double[][]MatrixSum(double[][]a,double[][]b)
+        {
+            double[][] temp = new double[a.Length + 1][];
+            for (int i = 0; i <= a.Length + 1; i++)
+                temp[i] = new double[a[i].Length+1];
+
+            for(int i=0;i<=a.Length;i++)
+                for(int j=0;j<=a[i].Length;j++)
+                    temp[i][j] = a[i][j] + b[i][j];
+
+
+            return temp;
+
+        }
+
+
+        /// <summary>
+        /// Перемножение одной матрицы на транспонированную другую
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double[][]MatrixOnTrMatrix(double[][]a,double[][]b)
+        {
+            double[][] temp = new double[a.Length + 1][];
+            for (int i = 0; i <= a.Length + 1; i++)
+                temp[i] = new double[a[i].Length + 1];
+
+
+            for (int i = 0; i <= a.Length; i++)
+                for (int j = 0; j <= b.Length; j++)
+                    for (int k = 0; k <= a[0].Length; k++)
+                        temp[i][j] = temp[i][j] + a[i][k] * b[j][k];
+
+
+            return temp;
+        }
+
+
+
+        /// <summary>
+        /// Вычитание одного вектора из другого
+        /// </summary>
+        /// <param name="a">Из какого вычитаем</param>
+        /// <param name="b">То, что вычитаем</param>
+        /// <returns></returns>
+        public double[] VectorDif(double[] a,double[]b)
+        {
+            double[] temp = new double[a.Length + 1];
+
+            for (int i = 0; i <= a.Length; i++)
+                temp[i] = a[i] - b[i];
+
+            return temp;
+
+        }
+
+
+
+
     }
 }
+ 
