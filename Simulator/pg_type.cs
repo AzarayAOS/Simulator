@@ -463,6 +463,28 @@ namespace Simulator
 
 
         /// <summary>
+        /// Сложение одного вектора с другогим
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        /// <returns></returns>
+        public double[] VectorSum(double[]a,double[]b)
+            {
+
+
+            double[] temp = new double[a.Length + 1];
+
+            for (int i = 0; i <= a.Length; i++)
+                temp[i] = a[i] + b[i];
+
+            return temp;
+
+
+            }
+
+
+
+        /// <summary>
         /// Вычитание одного вектора из другого
         /// </summary>
         /// <param name="a">Из какого вычитаем</param>
