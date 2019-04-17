@@ -6,26 +6,21 @@ using System.Threading.Tasks;
 
 namespace Simulator
 {
-
     /// <summary>
-    /// Класс массива типа double, 
+    /// Класс массива типа double,
     /// чтоб можно было использовать set и get, а так же индексы
     /// </summary>
-    class DoubleIndex
+    internal class DoubleIndex
     {
-        double[] _source;
+        private double[] _source;
 
         public int Lenght { get { return _source.Length; } }
 
         public double this[int index]
         {
             get { return _source[index]; }
-            set
-            {
-                _source[index] = value;
-            }
+            set { _source[index] = value; }
         }
-
 
         public DoubleIndex(int size)
         {
@@ -33,8 +28,7 @@ namespace Simulator
         }
     }
 
-
-    class TOrbVec
+    internal class TOrbVec
     {
         private double P { get; set; }
         private double K { get; set; }
@@ -44,7 +38,6 @@ namespace Simulator
         private double U { get; set; }
 
         private DoubleIndex itemss = new DoubleIndex(6);
-
 
         /// <summary>
         /// Перевод всех элементов массива по переменных отдельным
@@ -57,9 +50,7 @@ namespace Simulator
             I = itemss[3];
             Omega = itemss[4];
             U = itemss[5];
-
         }
-
 
         private void TOrbVecToDouble()
         {
@@ -70,7 +61,6 @@ namespace Simulator
             itemss[4] = Omega;
             itemss[5] = U;
         }
-
 
         private DoubleIndex Items
         {
@@ -87,11 +77,9 @@ namespace Simulator
                 return itemss;
             }
         }
-
     }
 
-
-    static class bal_types
+    internal static class bal_types
     {
     }
 }
