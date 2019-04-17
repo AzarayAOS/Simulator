@@ -1,4 +1,6 @@
-﻿using System;
+﻿/// Исходникик взяты с сайта https://jenyay.net/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

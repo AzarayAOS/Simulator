@@ -1,4 +1,6 @@
-﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿/// Исходникик взяты с сайта https://jenyay.net/
+
+//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Simulator;
 using System;
 using System.Collections.Generic;
