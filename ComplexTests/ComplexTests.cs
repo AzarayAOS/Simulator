@@ -1,4 +1,4 @@
-﻿/// Исходникик взяты с сайта https://jenyay.net/
+﻿/// Исходникик взят с сайта https://jenyay.net/
 
 //using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Simulator;

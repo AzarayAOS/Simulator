@@ -79,6 +79,45 @@ namespace Simulator
         }
     }
 
+    internal class TXYZ
+    {
+        private double X { get; set; }
+        private double Y { get; set; }
+        private double Z { get; set; }
+
+        private DoubleIndex itemss = new DoubleIndex(3);
+
+        private void DoubleToTXYZ()
+        {
+            X = itemss[0];
+            Y = itemss[1];
+            Z = itemss[2];
+        }
+
+        private void TXYZTpDouble()
+        {
+            itemss[0] = X;
+            itemss[1] = Y;
+            itemss[2] = Z;
+        }
+
+        private DoubleIndex Items
+        {
+            set
+            {
+                for (int i = 0; i < itemss.Lenght; i++)
+                    itemss[i] = value[i];
+
+                DoubleToTXYZ();
+            }
+            get
+            {
+                TXYZTpDouble();
+                return itemss;
+            }
+        }
+    }
+
     internal static class bal_types
     {
     }

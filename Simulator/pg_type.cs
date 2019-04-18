@@ -3,11 +3,11 @@ using System.Numerics;
 
 namespace Simulator
 {
-    public class DCplx
+    /*public class DCplx
     {
         public double Re { get; set; }
         public double Im { get; set; }
-    };
+    };*/
 
     internal class pg_type
     {
@@ -606,6 +606,229 @@ namespace Simulator
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Метод Гаусса — Зейделя для комплексных чисел
+        /// </summary>
+        /// <param name="A">Матрица коэфициентов</param>
+        /// <param name="B">Матрица ответов</param>
+        /// <param name="Coef">Матрица неизвестных</param>
+        /// <returns></returns>
+        public bool GaussSolveComp(Complex[,] A, ref Complex[] B, ref Complex[] Coef)
+        {
+            int m;
+            int size = A.GetLength(0) + 1;
+            Complex temp;
+
+            for (int i = 0; i <= size - 2; i++)
+            {
+                if (ComplexModul(A[i, i]) == 0)
+                {
+                    m = 0;
+
+                    while (ComplexModul(A[i, i]) == 0)
+                    {
+                        m++;
+                        if ((i + m) == size)
+                            return false;
+
+                        for (int j = 0; j <= size - 1; j++)
+                        {
+                            A[i + m, j] = ComplexSumm(A[i + m, j], A[i, j]);
+                            A[i, j] = ComplexSumm(A[i + m, j], A[i, j]);
+                            A[i + m, j] = ComplexSumm(A[i + m, j], A[i, j]);
+                        }
+
+                        B[i + m] = ComplexSumm(B[i + m], B[i]);
+                        B[i] = ComplexSumm(B[i + m], B[i]);
+                        B[i + m] = ComplexSumm(B[i + m], B[i]);
+                    }
+                }
+
+                for (int k = i + 1; k <= size - 1; k++)
+                {
+                    B[k] = ComplexDiff(B[k], ComplexMult(ComplexDiv(A[k, i], A[i, i]), B[i]));
+                    for (int j = size - 1; j >= i; j--)
+                        A[k, j] = ComplexDiff(A[k, j], ComplexMult(ComplexDiv(A[k, i], A[i, i]), A[i, j]));
+                }
+            }
+
+            for (int i = 0; i <= size - 1; i++)
+                if (ComplexModul(A[i, i]) == 0)
+                    return false;
+
+            Coef = new Complex[size];
+
+            for (int i = size - 1; i >= 0; i--)
+            {
+                temp = new Complex(0, 0);
+                for (int j = i + 1; j <= size - 1; j++)
+                    temp = ComplexSumm(temp, ComplexMult(Coef[j], A[i, j]));
+
+                Coef[i] = ComplexDiv(ComplexDiff(B[i], temp), A[i, i]);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Суммирование комплекных чисел
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public Complex ComplexSumm(Complex A, Complex B)
+        {
+            return A + B;
+        }
+
+        /// <summary>
+        /// Разность комплексных чисел
+        /// </summary>
+        /// <param name="A">Из чего вычитаем</param>
+        /// <param name="B">Что вычитаем</param>
+        /// <returns></returns>
+        public Complex ComplexDiff(Complex A, Complex B)
+        {
+            return A - B;
+        }
+
+        /// <summary>
+        /// Перемножение комплексных чисел
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public Complex ComplexMult(Complex A, Complex B)
+        {
+            return A * B;
+        }
+
+        /// <summary>
+        /// Стремное умножение
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <returns></returns>
+        public Complex ComplexMultSopr(Complex A, Complex B)
+        {
+            return new Complex((A.Re * B.Re - A.Im * B.Im), (A.Im * B.Re + A.Re * B.Im));
+        }
+
+        /// <summary>
+        /// Вроде бы деление двух комплексных чисел
+        /// </summary>
+        /// <param name="A">Что делим</param>
+        /// <param name="B">На что делим </param>
+        /// <param name="Norm">Если в результате действительная часть делителя равна 0,
+        /// то заменяем 0 на 0,001</param>
+        /// <returns></returns>
+        public Complex ComplexDiv(Complex A, Complex B, bool Norm = false)
+        {
+            Complex Temp, Temp1, BTemp;
+            BTemp = new Complex(B.Re, -B.Im);
+            Temp1 = A * BTemp;
+            Temp = B * BTemp;
+            if (Norm && (Temp.Re == 0))
+                Temp.Re = 0.001f;
+            Temp.Im = Temp1.Im / Temp.Re;
+            Temp.Re = Temp1.Re / Temp.Re;
+
+            return Temp;
+        }
+
+        /// <summary>
+        /// Модуль комплекстного числа
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public double ComplexModul(Complex A)
+        {
+            return A.Abs;
+        }
+
+        /// <summary>
+        /// Арктангенс мнимой части, делённой на действительную
+        /// </summary>
+        /// <param name="A"></param>
+        /// <returns></returns>
+        public double ComplexPhase(Complex A)
+        {
+            return Math.Atan(A.Im / A.Re);
+        }
+
+        public Complex[,] MatrixInvertCompl(Complex[,] a)
+        {
+            int m, dim;
+            dim = a.GetLength(0) + 1;
+
+            Complex[,] b = new Complex[dim, 2 * dim];
+            Complex[,] c = new Complex[dim, dim];
+
+            for (int i = 0; i <= dim - 1; i++)
+                for (int j = 0; j <= dim - 1; j++)
+                {
+                    //c[i, j].Re = a[i, j].Re;
+                    //c[i, j].Im = a[i, j].Im;
+                    c[i, j] = a[i, j];
+                }
+
+            for (int i = 0; i <= dim - 1; i++)
+                for (int j = 0; j <= dim - 1; j++)
+                {
+                    //b[i, j].Re = c[i, j].Re;
+                    //b[i, j].Im = c[i, j].Im;
+                    b[i, j] = c[i, j];
+                }
+
+            for (int i = 0; i <= dim - 1; i++)
+            {
+                //b[i, dim + i].Re = 1;
+                //b[i, dim + i].Im = 1;
+                b[i, dim + i] = new Complex(1f, 1f);
+            }
+
+            for (int i = 0; i <= dim - 2; i++)
+            {
+                if ((Math.Abs(b[i, i].Re) < 1e-10) && (Math.Abs(b[i, i].Im) < 1e-10))
+                {
+                    m = 0;
+                    while ((Math.Abs(b[i, i].Re) > 1e-10) && (Math.Abs(b[i, i].Im) != 1e-10))
+                    {
+                        m++;
+                        for (int j = 0; j <= 2 * dim - 1; j++)
+                        {
+                            b[i + m, j] = ComplexSumm(b[i + m, j], b[i, j]);
+                            b[i, j] = ComplexDiff(b[i + m, j], b[i, j]);
+                            b[i + m, j] = ComplexDiff(b[i + m, j], b[i, j]);
+                        }
+                    }
+                }
+            }
+
+            for (int i = 0; i <= dim - 1; i++)
+                for (int k = 0; k <= dim - 1; k++)
+                    if (i != k)
+                        for (int j = 2 * dim - 1; j >= i; j--)
+                            b[k, j] = ComplexDiff(b[k, j], ComplexMult(ComplexDiv(b[k, i], b[i, i]), b[i, j]));
+
+            for (int i = dim - 1; i >= 0; i--)
+                for (int j = 2 * dim - 1; j >= 0; j--)
+                    b[i, j] = ComplexDiv(b[i, j], b[i, i]);
+
+            for (int i = 0; i <= dim - 1; i++)
+                for (int j = 0; j <= dim - 1; j++)
+                {
+                    c[i, j] = b[i, j + dim];
+                }
+
+            return c;
+        }
+
+        public double gauss(double x, double m, double g)
+        {
+            return (1 / (Math.Sqrt(2 * Math.PI * g)) * Math.Exp((-0.5f) * (Math.Pow(x - m, 2) / g)));
         }
     }
 }
