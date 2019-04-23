@@ -9,7 +9,7 @@ namespace Simulator
         public double Im { get; set; }
     };*/
 
-    internal class pg_type
+    public class pg_type
     {
         /// <summary>
         /// Копирует массив в другой массив.
