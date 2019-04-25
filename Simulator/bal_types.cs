@@ -35,6 +35,33 @@ namespace Simulator
         }
     }
 
+    /// <summary>
+    /// Класс массива типа int,
+    /// чтоб можно было использовать set и get, а так же индексы
+    /// </summary>
+    public class IntegerIndex
+    {
+        private int[] _source;
+        public int Lenght { get { return _source.Length; } }
+
+        public int this[int index]
+        {
+            get { return _source[index]; }
+            set { _source[index] = value; }
+        }
+
+        public IntegerIndex(int size)
+        {
+            _source = new int[size];
+        }
+
+        public IntegerIndex(int[] value)
+        {
+            _source = new int[value.Length];
+            _source = value;
+        }
+    }
+
     public class TOrbVec
     {
         public double P { get; set; }
@@ -44,7 +71,7 @@ namespace Simulator
         public double Omega { get; set; }
         public double U { get; set; }
 
-        private DoubleIndex itemss = new DoubleIndex(6);
+        public DoubleIndex itemss = new DoubleIndex(6);
 
         #region Конструкторы
 
@@ -108,21 +135,21 @@ namespace Simulator
 
         #endregion Перекидывание значений из одного блока переменных в другой
 
-        public DoubleIndex Items
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //public DoubleIndex Items
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                DoubleToTOrbVec();
-            }
-            get
-            {
-                TOrbVecToDouble();
-                return itemss;
-            }
-        }
+        //        DoubleToTOrbVec();
+        //    }
+        //    get
+        //    {
+        //        TOrbVecToDouble();
+        //        return itemss;
+        //    }
+        //}
     }
 
     public class TXYZ
@@ -131,7 +158,7 @@ namespace Simulator
         public double Y { get; set; }
         public double Z { get; set; }
 
-        private DoubleIndex itemss = new DoubleIndex(3);
+        public DoubleIndex itemss = new DoubleIndex(3);
 
         #region Конструкторы
 
@@ -179,22 +206,22 @@ namespace Simulator
 
         #endregion Перекидывание значений из одного блока переменных в другой
 
-        public DoubleIndex Items
+        //public DoubleIndex Items
 
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                DoubleToTXYZ();
-            }
-            get
-            {
-                TXYZTpDouble();
-                return itemss;
-            }
-        }
+        //        DoubleToTXYZ();
+        //    }
+        //    get
+        //    {
+        //        TXYZTpDouble();
+        //        return itemss;
+        //    }
+        //}
     }
 
     public class TXYZVxVyVz
@@ -209,23 +236,23 @@ namespace Simulator
 
         public TXYZ Pos, Vel;
 
-        private DoubleIndex itemss = new DoubleIndex(6);
+        public DoubleIndex itemss = new DoubleIndex(6);
 
-        public DoubleIndex Items
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //public DoubleIndex Items
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                Metod4();
-                Metod3();
-            }
-            get
-            {
-                return itemss;
-            }
-        }
+        //        Metod4();
+        //        Metod3();
+        //    }
+        //    get
+        //    {
+        //        return itemss;
+        //    }
+        //}
 
         #region Методы перекидывания значений из одного блока переменных в другой
 
@@ -353,23 +380,23 @@ namespace Simulator
         public double Vdec { get; set; }
         public double Vr { get; set; }
 
-        private DoubleIndex itemss = new DoubleIndex(6);
+        public DoubleIndex itemss = new DoubleIndex(6);
 
-        public DoubleIndex Items
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //public DoubleIndex Items
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                DoubleToTSpher6d();
-            }
-            get
-            {
-                TSpher6dToDouble();
-                return itemss;
-            }
-        }
+        //        DoubleToTSpher6d();
+        //    }
+        //    get
+        //    {
+        //        TSpher6dToDouble();
+        //        return itemss;
+        //    }
+        //}
 
         #region Перекидывание значений из одного блока переменных в другой
 
@@ -440,23 +467,23 @@ namespace Simulator
         public double Ra { get; set; }  // Прямое восхождение восходящего узла
         public double V { get; set; }   // Истинная аномалия
 
-        private DoubleIndex itemss = new DoubleIndex(6);
+        public DoubleIndex itemss = new DoubleIndex(6);
 
-        public DoubleIndex Items
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //public DoubleIndex Items
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                DoubleToTSpher6d();
-            }
-            get
-            {
-                TSpher6dToDouble();
-                return itemss;
-            }
-        }
+        //        DoubleToTSpher6d();
+        //    }
+        //    get
+        //    {
+        //        TSpher6dToDouble();
+        //        return itemss;
+        //    }
+        //}
 
         #region Перекидывание значений из одного блока переменных в другой
 
@@ -527,23 +554,23 @@ namespace Simulator
         public double Ap { get; set; }  // аргумент перигея
         public double Ra { get; set; }  // Прямое восхождение по восходящему узлу
 
-        private DoubleIndex itemss = new DoubleIndex(6);
+        public DoubleIndex itemss = new DoubleIndex(6);
 
-        public DoubleIndex Items
-        {
-            set
-            {
-                for (int i = 0; i < itemss.Lenght; i++)
-                    itemss[i] = value[i];
+        //public DoubleIndex Items
+        //{
+        //    set
+        //    {
+        //        for (int i = 0; i < itemss.Lenght; i++)
+        //            itemss[i] = value[i];
 
-                DoubleToTSpher6d();
-            }
-            get
-            {
-                TSpher6dToDouble();
-                return itemss;
-            }
-        }
+        //        DoubleToTSpher6d();
+        //    }
+        //    get
+        //    {
+        //        TSpher6dToDouble();
+        //        return itemss;
+        //    }
+        //}
 
         #region Перекидывание значений из одного блока переменных в другой
 
@@ -708,7 +735,9 @@ namespace Simulator
     /// </summary>
     public class AnsiChar
     {
-        private readonly Encoding ANSI = Encoding.GetEncoding(1252);
+        //private readonly Encoding ANSI = Encoding.GetEncoding(1252);
+        private readonly Encoding ANSI = Encoding.ASCII;
+
         private readonly Encoding UTF8 = Encoding.UTF8;
 
         private byte[] utf8_bytes, ansi_bytes;
@@ -736,8 +765,8 @@ namespace Simulator
         /// <summary>
         /// вернуть символ в формате ansi
         /// </summary>
-        /// <returns></returns>
-        public byte GetAnsi()
+        /// <returns>возвращает в байтах</returns>
+        public byte GetAnsiByte()
         {
             return ansi_bytes[0];
         }
@@ -758,7 +787,7 @@ namespace Simulator
     {
         private AnsiChar[] date;
 
-        public TTLELine(int size = 1)
+        public TTLELine(int size = 70)
         {
             date = new AnsiChar[size];
 
@@ -779,7 +808,497 @@ namespace Simulator
         }
     }
 
+    public class TTLETypeEx
+    {
+        public int SatID { get; set; }
+
+        private TTLELine[] TLE;
+
+        public TTLETypeEx()
+        {
+            TLE = new TTLELine[2];
+            TLE[0] = new TTLELine();
+            TLE[1] = new TTLELine();
+        }
+
+        /// <summary>
+        /// Установить занчение переменной TLE
+        /// </summary>
+        /// <param name="i">Индекс</param>
+        /// <param name="value">Значение</param>
+        public void SetTLE(int i, TTLELine value)
+        {
+            TLE[i] = value;
+        }
+
+        /// <summary>
+        /// Получить значение TLE
+        /// </summary>
+        /// <param name="i">Индекс </param>
+        /// <returns></returns>
+        public TTLELine GetTLE(int i)
+        {
+            return TLE[i];
+        }
+    }
+
+    public class TSGP_Data
+    {
+        public double Epoch { get; set; }           // Материал из файла
+        public double Julian_Epoch { get; set; }   // Юлианская дата
+        public double Xno { get; set; }             // Среднее движение, рад / мин
+        public double Bstar { get; set; }           // Коэффициент трения
+        public double Xincl { get; set; }           // наклон
+        public double Eo { get; set; }              // эксцентриситет
+        public double Xmo { get; set; }             // означает аномалию
+        public double Omegao { get; set; }          // аргумент перигея
+        public double Xnodeo { get; set; }          // Прямое восхождение по восходящему узлу
+        public double Xndt2o { get; set; }          // Первая производная от среднего движения рад / мин ^ 2
+        public double Xndd6o { get; set; }          // Второй раз производная от среднего движения radmin ^ 3
+        public int Ideep { get; set; }              // 0 - период <225 мин, 1 период> 225 мин
+
+        public IntegerIndex Catnr = new IntegerIndex(4);
+        public IntegerIndex Elset = new IntegerIndex(2);
+    }
+
+    public class TAdditionalSatData
+    {
+        public string Identifier { get; set; }
+        public string LaunchName { get; set; }
+        public string SatName { get; set; }
+        public string LaunchOrg { get; set; }
+        public string LaunchDate { get; set; }
+
+        public double RCS { get; set; }
+        public double Magnitude { get; set; }
+    }
+
+    public class TAdditionalSatDataFull
+    {
+        public int NoradNum { get; set; }
+
+        public string InternationalDesignator { get; set; }
+        public string Name1 { get; set; }
+        public string Name2 { get; set; }
+        public string LaunchOrg { get; set; }
+        public string LaunchDate { get; set; }
+        public string OrbitStatus { get; set; }
+        public string DateOfOrbitStatusChange { get; set; }
+        public string OrbitType { get; set; }
+
+        public bool Operational { get; set; }
+        public bool ParamsFilled { get; set; }
+        public string Name3 { get; set; }
+        public string Country { get; set; }
+        public string Operator { get; set; }
+        public string SatType { get; set; }
+
+        public double A { get; set; }
+        public double E { get; set; }
+        public double I { get; set; }
+        public double LaunchMass { get; set; }
+        public double DryMass { get; set; }
+        public double Power { get; set; }
+
+        public string LaunchSite { get; set; }
+        public string LaunchVehicle { get; set; }
+        public string Comments { get; set; }
+
+        public AnsiChar BigComments = new AnsiChar(128);
+    }
+
+    public class TNonNoradDBItem
+    {
+        public double[] NoradVec;
+        public double DragTerm { get; set; }
+        public double RefTimeJD1957 { get; set; }
+        public string Name { get; set; }
+    }
+
+    public class TNonNoradDBItemArray
+    {
+        private TNonNoradDBItem[] date;
+
+        /// <summary>
+        /// количество элементов
+        /// </summary>
+        /// <param name="size"></param>
+        public TNonNoradDBItemArray(int size = 1)
+        {
+            date = new TNonNoradDBItem[size];
+
+            for (int i = 0; i < size; i++)
+                date[i] = new TNonNoradDBItem();
+        }
+
+        public TNonNoradDBItem this[int index]
+        {
+            get
+            {
+                return date[index];
+            }
+            set
+            {
+                date[index] = value;
+            }
+        }
+    }
+
+    public class TMeasurementData
+    {
+        public double Declination { get; set; }
+        public double RightAscension { get; set; }
+        public double Elevation { get; set; }
+        public double Azimuth { get; set; }
+        public double Time { get; set; }
+        public double DeclSp { get; set; }
+        public double RASp { get; set; }
+
+        public double VD { get; set; }      // доплеровская скорость
+
+        public double Magnitude { get; set; }
+    }
+
+    public class TMeasurementDataArray
+    {
+        private TMeasurementData[] date;
+
+        /// <summary>
+        /// количество элементов
+        /// </summary>
+        /// <param name="size"></param>
+        public TMeasurementDataArray(int size = 1)
+        {
+            date = new TMeasurementData[size];
+
+            for (int i = 0; i < size; i++)
+                date[i] = new TMeasurementData();
+        }
+
+        public TMeasurementData this[int index]
+        {
+            get
+            {
+                return date[index];
+            }
+            set
+            {
+                date[index] = value;
+            }
+        }
+    }
+
+    public class tObserverParameters
+    {
+        public int O_type { get; set; } // 0 - радар, 1 - телескоп
+        public double H { get; set; }
+        public double F { get; set; }
+        public double L { get; set; }
+
+        public TXYZ XYZPGSK { get; set; }
+
+        public double MinElev { get; set; }
+
+        public double MaxRange { get; set; }
+        public double ElevPrec { get; set; }
+        public double AzPrec { get; set; }
+        public double RangePrec { get; set; }
+        public double VelPrec { get; set; }
+        public double AccelPrec { get; set; }
+        public double AzVelPrec { get; set; }
+        public double ElVelPrec { get; set; }
+        public double ElevFOV { get; set; }
+        public double AzFOV { get; set; }
+
+        public double RaPrec { get; set; }
+        public double DecPrec { get; set; }
+        public double SunAng { get; set; }
+        public double FOV { get; set; }
+    }
+
+    public class TBlipsData
+    {
+        public double Time { get; set; }
+        public double RightAscension { get; set; }
+        public double Declination { get; set; }
+        public double PrecRA { get; set; }
+        public double PrecDecl { get; set; }
+        public double Dist { get; set; }
+
+        public int Year { get; set; }
+        public int Month { get; set; }
+        public int Day { get; set; }
+
+        public double DayTime { get; set; }
+        public int DayNr { get; set; }
+        public double JD { get; set; }
+        public bool Exclude { get; set; }
+
+        public TXYZ XyzRad { get; set; }
+        public bool XyzRadSet { get; set; }
+    }
+
+    public class TBlipsDataArray
+    {
+        private TBlipsData[] date;
+
+        /// <summary>
+        /// количество элементов
+        /// </summary>
+        /// <param name="size"></param>
+        public TBlipsDataArray(int size = 1)
+        {
+            date = new TBlipsData[size];
+
+            for (int i = 0; i < size; i++)
+                date[i] = new TBlipsData();
+        }
+
+        public TBlipsData this[int index]
+        {
+            get
+            {
+                return date[index];
+            }
+            set
+            {
+                date[index] = value;
+            }
+        }
+    }
+
+    public class TBlipsDataArray2D
+    {
+        private TBlipsData[,] date;
+
+        /// <summary>
+        /// Количество элементов в матрице
+        /// </summary>
+        /// <param name="size1">Строки</param>
+        /// <param name="size2">Столбци</param>
+        public TBlipsDataArray2D(int size1 = 1, int size2 = 1)
+        {
+            date = new TBlipsData[size1, size2];
+
+            for (int i = 0; i < size1; i++)
+                for (int j = 0; j < size2; j++)
+                    date[i, j] = new TBlipsData();
+        }
+
+        public TBlipsData this[int index1, int index2]
+        {
+            get
+            {
+                return date[index1, index2];
+            }
+            set
+            {
+                date[index1, index2] = value;
+            }
+        }
+    }
+
+    public class TCPFBlipsData
+    {
+        public double Jd1957 { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+    }
+
+    public class TCPFBlipsDataArray
+    {
+        private TCPFBlipsData[] date;
+
+        /// <summary>
+        /// количество элементов
+        /// </summary>
+        /// <param name="size"></param>
+        public TCPFBlipsDataArray(int size = 1)
+        {
+            date = new TCPFBlipsData[size];
+
+            for (int i = 0; i < size; i++)
+                date[i] = new TCPFBlipsData();
+        }
+
+        public TCPFBlipsData this[int index]
+        {
+            get
+            {
+                return date[index];
+            }
+            set
+            {
+                date[index] = value;
+            }
+        }
+    }
+
+    public class TSimpleBlipsData
+    {
+        public double Jd1957 { get; set; }
+        public double Ra { get; set; }
+        public double Dec { get; set; }
+        public double SigRa { get; set; }
+        public double SigDec { get; set; }
+    }
+
+    public class TSimpleBlipsDataArray
+    {
+        private TSimpleBlipsData[] date;
+
+        /// <summary>
+        /// количество элементов
+        /// </summary>
+        /// <param name="size"></param>
+        public TSimpleBlipsDataArray(int size = 1)
+        {
+            date = new TSimpleBlipsData[size];
+
+            for (int i = 0; i < size; i++)
+                date[i] = new TSimpleBlipsData();
+        }
+
+        public TSimpleBlipsData this[int index]
+        {
+            get
+            {
+                return date[index];
+            }
+            set
+            {
+                date[index] = value;
+            }
+        }
+    }
+
     public static class bal_types
     {
+        private const double WZ = 0.7292115855E-4;
+        private const double ALFA = 1 / 298.25;
+        private const double AE = 6378.137;
+        private const double JD2000 = 15341.5;              // Юлианская дата 1 января 2000 г. 12:00:00 с 31 декабря 1957 г. 00:00:00
+        private const double J2000 = 2451545.0;             // Юлианская дата 1 января 2000 г. 12:00:00 от н.э.
+        private const double J1991_25 = 2448349.0625;
+        private const double J1957 = 2436203.5;             // Юлианская дата 31 декабря 1957 г. 00:00:00 от н.э.
+        private const double J0000 = 1721060.25;            // Юлианская дата 0.1.1 00:00:00
+        private const double JD2MJD = 2400000.5;
+
+        private const double GM = 3.986004418e14;           // EGM96
+        private const double GM_km = GM / 1000000000;
+        private const double MUM = GM_km;
+        private const double MU = MUM;
+        private const double R0km = 6378.137;               // экваториальный радиус WGS'84
+        private const double R0 = 6378137;                  // WGS'84
+        private const double RSun = 1390600;
+        private const double R3km = 6378.136;
+        private const double Q = 4.65e-6;                   // Н/(m^2)
+        private const double EarthMajorSemiAxis = 149597887.5;
+        private const double KDiffuse = 1.44;
+        private const double KMirror = 1.0f;
+        private const double LightSpeed = 299792.458;       // км/с
+        private const double EarthRotSpeed = 7.292115e-5;   // рад / с WGS'84
+        private const double AEarth = 6378.137;             // WGS'84
+        private const double EEarth = 1 / 298.257223560;    // WGS'84
+        private const double Mu_sol = GM_km * 1.989e30 / 5.9764e24;
+        private const double Mu_lun = GM_km * 7.350e22 / 5.9764e24;
+        private const double Twopi = 2 * Math.PI;
+        private const double R_g = 180 / Math.PI;
+        private const double G_r = 1 / R_g;
+        private const double Sr = 696000.0;                 // Солнечный радиус - километры (IAU 76)
+        private const double AU = 1.49597870691E8;          // Астрономическая единица измерения - километры (IAU 76)
+        private const double Xmnpda = 1440.0f;              // Минут в день
+        private const double Secday = Xmnpda * 60;          // Секунд в день
+        private const double Omega_E = 1.00273790934;       // вращения Земли за звездный день (непостоянный)
+        private const double Omega_ER = Omega_E * Twopi;    // Вращение Земли, радианы в звездный день
+        private const double Xkmper = 6378.137;             // Экваториальный радиус Земли - километры (WGS '84)
+        private const double Eflat = 1 / 298.257223563;     // Земля выравнивание (WGS '84)
+        private const double Ge = 398600.4418;              // Гравитационная постоянная Земли (WGS '84)
+
+        public static double Sqr(double t1)
+        {
+            return t1 * t1;
+        }
+
+        public static void Magnitude(ref double[] v)
+        {
+            v[3] = Math.Sqrt(Sqr(v[0]) + Sqr(v[1]) + Sqr(v[2]));
+        }
+
+        public static double Dot(double[] v1, double[] v2)
+        {
+            return v1[1] * v2[1] + v1[2] * v2[2] + v1[3] * v2[3];
+        }
+
+        public static void TLELineCRC(string line1, ref int crc)
+        {
+            crc = 0;
+            for (int i = 1; i < line1.Length; i++)
+            {
+                int temp = Encoding.ASCII.GetBytes(line1)[i];
+                if (temp == 45)
+                    crc++;
+                else
+                {
+                    if ((temp >= 48) && (temp <= 57))
+                    {
+                        crc = crc + temp - 48;
+                    }
+                }
+            }
+
+            crc = crc % 10;
+        }
+
+        /// <summary>
+        /// Формирует строку с символом в указаном количестве
+        /// и дополняет её строкой
+        /// </summary>
+        /// <param name="aString">Строка в конце</param>
+        /// <param name="aCharCount">Количество повторений символа aChar    </param>
+        /// <param name="aChar">Повторяющийся символ</param>
+        /// <returns></returns>
+        public static string CwLeftPad(string aString, int aCharCount, AnsiChar aChar)
+        {
+            string temp = "";
+            byte[] temp1 = new byte[1];
+            temp1[0] = aChar.GetAnsiByte();
+            for (int i = 1; i < aCharCount; i++)
+            {
+                temp += Encoding.ASCII.GetString(temp1);
+            }
+
+            temp += aString;
+            return temp;
+        }
+
+        /// <summary>
+        /// Перевод даты в Юлианском календаре в Гирогианский
+        /// </summary>
+        /// <param name="julianDate">размер отсчётов</param>
+        /// <returns></returns>
+        public static DateTime FromJulian(double julianDate)
+        {
+            return new DateTime(
+              checked((long)((julianDate - 1721425.5) * TimeSpan.TicksPerDay)),
+              DateTimeKind.Utc);
+        }
+
+        public static void EncodeNoradOrb2TLE(double epoch_jd_bc, TNoradOrb ord, double bstar, int norad_number, ref string line1, ref string line2)
+        {
+            DateTime dt = new DateTime();
+            int year;
+            double day;
+            string bstar_str, bstar_sign, exp_sign, ts;
+            double tmp;
+            int exp;
+            int crc;
+
+            dt = FromJulian(epoch_jd_bc);
+
+            line1 = "";
+            line1 += "1 ";          // Номер строки данных элемента
+        }
     }
 }
