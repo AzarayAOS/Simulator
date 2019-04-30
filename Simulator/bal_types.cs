@@ -1285,6 +1285,17 @@ namespace Simulator
               DateTimeKind.Utc);
         }
 
+        /// <summary>
+        /// Выделение из числа дрорбной части
+        /// </summary>
+        /// <param name="val"></param>
+        /// <returns></returns>
+        public static double Frac(double val)
+        {
+            int full = (int)val;
+            return (val - full);
+        }
+
         public static void EncodeNoradOrb2TLE(double epoch_jd_bc, TNoradOrb ord, double bstar, int norad_number, ref string line1, ref string line2)
         {
             DateTime dt = new DateTime();
@@ -1299,6 +1310,21 @@ namespace Simulator
 
             line1 = "";
             line1 += "1 ";          // Номер строки данных элемента
+            line1 += String.Format("{0:00000}U", norad_number);  // Номер спутника, классификация (U = не классифицировано)
+            line1 += "00";          // Международный указатель (последние две цифры года запуска)
+            line1 += "000";         // Международный указатель (Стартовый номер года)
+            line1 += "A   ";        // Международный указатель (Часть запуска)
+
+            // NOAA 14
+            // 1 23455U 94089A   97320.90946019  .00000140  00000-0  10191-3 0  2621
+            // 2 23455  99.0090 272.6745 0008546 223.1686 136.8816 14.11711747148495
+
+            year = dt.Year;
+            year %= 100;
+            line1 += String.Format("{0:00}", year);             // Эпоха года (последние две цифры года)
+            line1 += String.Format("{0:000}", dt.DayOfYear);    // День эпохи
+
+            ts = String.Format("{}", Frac(dt))
         }
     }
 }
