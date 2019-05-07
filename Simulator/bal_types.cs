@@ -1231,7 +1231,7 @@ namespace Simulator
             return v1[1] * v2[1] + v1[2] * v2[2] + v1[3] * v2[3];
         }
 
-        public static void TLELineCRC(string line1, ref int crc)
+        public static void TLELineCRC(string line1, out int crc)
         {
             crc = 0;
             for (int i = 1; i < line1.Length; i++)
@@ -1296,6 +1296,25 @@ namespace Simulator
             return (val - full);
         }
 
+        /// <summary>
+        /// Представляет собой решение, где
+        /// целая часть -- количество дней
+        /// дробная время, в котором 1 целая часть -- 24 часа
+        /// </summary>
+        /// <param name="dd">дата-время</param>
+        /// <returns>Время в формате 1/текущее время*24часа</returns>
+        public static double MilSe(DateTime dd)
+        {
+            double m = dd.Hour * 60 + dd.Minute;
+            double s = m * 60 + dd.Second;
+            double mms = s * 100 + dd.Millisecond;
+            double coef = 1.0 / (24 * 60 * 60 * 100);
+            double tt = mms * coef;
+
+            tt = Math.Round(tt, 8);
+            return tt;
+        }
+
         public static void EncodeNoradOrb2TLE(double epoch_jd_bc, TNoradOrb ord, double bstar, int norad_number, ref string line1, ref string line2)
         {
             DateTime dt = new DateTime();
@@ -1308,9 +1327,8 @@ namespace Simulator
 
             dt = FromJulian(epoch_jd_bc);
 
-            line1 = "";
-            line1 += "1 ";          // Номер строки данных элемента
-            line1 += String.Format("{0:00000}U", norad_number);  // Номер спутника, классификация (U = не классифицировано)
+            line1 = "1 ";           // Номер строки данных элемента
+            line1 += String.Format("{0:00000}U ", norad_number);  // Номер спутника, классификация (U = не классифицировано)
             line1 += "00";          // Международный указатель (последние две цифры года запуска)
             line1 += "000";         // Международный указатель (Стартовый номер года)
             line1 += "A   ";        // Международный указатель (Часть запуска)
@@ -1324,7 +1342,106 @@ namespace Simulator
             line1 += String.Format("{0:00}", year);             // Эпоха года (последние две цифры года)
             line1 += String.Format("{0:000}", dt.DayOfYear);    // День эпохи
 
-            ts = String.Format("{}", Frac(dt))
+            ts = MilSe(dt).ToString();
+            AnsiChar sps = new AnsiChar(1);
+            sps.SetUTF8(" ");
+            line1 += CwLeftPad(
+                ts.ToString().
+                Replace(',', '.').
+                TrimStart('0'), 9, sps);                         // Эпоха (День года и дробная часть дня)
+            line1 += "  .00000000 ";                            // Первая производная от среднего движения
+            line1 += " 00000-0 ";                               // Производный среднего времени второго движения (предполагается десятичная точка)
+
+            // Установить знак BStar
+            if (bstar < 0)
+            {
+                tmp = -bstar;
+                bstar_sign = "-";
+            }
+            else
+            {
+                tmp = bstar;
+                bstar_sign = " ";
+            }
+
+            // Находим показатель
+            exp = 0;
+
+            if (tmp != 0)
+            {
+                if (tmp < 1)
+                {
+                    while (tmp < 0.1)
+                    {
+                        exp--;
+                        tmp *= 10;
+                    }
+                }
+                else
+                {
+                    while (tmp > 1)
+                    {
+                        exp++;
+                        tmp *= 0.1;
+                    }
+                }
+            }
+
+            // Находим знак экспоненты
+            exp_sign = exp < 0 ? "-" : "+";
+
+            // Кодируем знак bstar
+            bstar_str = String.Format("{0:s}{1:.00000}{2:s}{3:0d}", bstar_sign, Math.Round(tmp * 1e5), exp_sign, Math.Abs(exp));
+
+            line1 += bstar_str + " ";           // термин BSTAR (предполагается десятичная точка)
+            line1 += "0 ";                      // Эфемеридный тип
+
+            line1 += "   1";
+
+            TLELineCRC(line1, out crc);
+
+            line1 += String.Format("{0:d}", crc);
+
+            line2 = "2 ";                                           // Номер строки данных элемента
+            line2 += String.Format("{0:00000} ", norad_number);     // номер спутника
+            line2 += CwLeftPad(String.Format("{0:000.0000}",
+                ord.I * 180 / Math.PI), 8, sps) + " ";                // Наклон [градусы]
+            line2 += CwLeftPad(String.Format("{0:000.0000}",
+                ord.Ra * 180 / Math.PI), 8, sps) + " ";             // Прямое восхождение по восходящему узлу [градусы]
+            line2 += String.Format("{0:.0000000d}",
+                Math.Round(ord.E * 1e7));                           // Эксцентриситет (предполагается десятичная точка)
+
+            line2 += CwLeftPad(String.Format("{0:000.0000}",
+                ord.Ap * 180 / Math.PI), 8, sps) + " ";             // Аргумент Перигея [Степени]
+            line2 += CwLeftPad(String.Format("{0:000.0000}",
+                ord.Ma * 180 / Math.PI), 8, sps) + " ";             // Средняя аномалия [градусы]
+            line2 += CwLeftPad(String.Format("{0:000.0000}",
+                ord.Mm * 1440 / (2 * Math.PI)), 11, sps) + " ";       // Среднее движение [Оборотов в день]
+
+            line2 += "00001";                                       // Номер революции в эпоху [Revs]
+
+            TLELineCRC(line2, out crc);
+            line2 += String.Format("{0:d}", crc);                   // Контрольная сумма (по модулю 10) (буквы, пробелы, точки, знаки плюс = 0; знаки минус = 1)
+        }
+
+        /// <summary>
+        /// Создание структуры TNoradOrb на основе вектора
+        /// </summary>
+        /// <param name="vec">Вектор значений</param>
+        /// <returns></returns>
+        public static TNoradOrb NoradOrb(double[] vec)
+        {
+            if (vec.Length < 6)
+            {
+                System.Windows.Forms.MessageBox.Show(
+                  "Неверный размер входного вектора в NoradOrb ()",
+                  "Ошибка",
+                  System.Windows.Forms.MessageBoxButtons.OK,
+                  System.Windows.Forms.MessageBoxIcon.Error);
+                return null;
+            }
+            else
+                return new TNoradOrb(vec);
         }
     }
 }
